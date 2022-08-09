@@ -1,14 +1,19 @@
 <script>
+	import { afterUpdate } from "svelte";
 	import supabase from '$lib/supabase'
 	import MessagesStore from '$lib/stores/MessagesStore'
 	import Message from '$lib/components/Message.svelte';
 
 	let message = '';
+	let scrollElement;
 
 	const addMessage = async () => {
 		if (!message) return;
 
-		const {data, error} = await supabase.from('messages').insert({content: message, user: supabase.auth.session().user.id})
+		const {data, error} = await supabase.from('messages').insert({
+			content: message, 
+			user: supabase.auth.session().user.id
+		})
 
 		if (error) {
 			console.error(error);
@@ -16,11 +21,17 @@
 			message = '';
 		}
 	}
+
+	afterUpdate(() => {
+		if (scrollElement)
+			scrollElement.scrollTop = scrollElement.scrollHeight;
+	});
+
 </script>
 
 
 <div class="flex flex-col h-full">
-	<div class="flex flex-col space-y-2 mb-4 overflow-y-auto">
+	<div class="flex flex-col space-y-2 mb-4 overflow-y-auto" bind:this={scrollElement}>
 		{#if $MessagesStore}
 			{#each $MessagesStore as {content, user}}
 				<Message {content} {user}/>
