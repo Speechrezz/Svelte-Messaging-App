@@ -17,21 +17,21 @@
 				{/if}
 			</h1>
 			<p class="py-6">
-				Welcome to this very basic todo-list app! 
+				Welcome to this very basic messaging app!
 				{#if (!$UserStore)}
-										In order to get started please either sign in or sign up.
+					To get started please either sign in or sign up.
 				{:else}
-					Add a todo by typing in the text box below!
+					Start messaging!
 				{/if}
 			</p>
-							<div>
+			<div>
 				{#if (!$UserStore)}
 					<a href="user/signin"><button class="btn btn-primary">Sign in</button></a>
 					<a href="user/signup"><button class="btn btn-outline">Sign up</button></a>
 				{:else}
 					<button on:click={handleSignout} class="btn btn-outline">Sign out</button>
 				{/if}
-							</div>
+			</div>
 		</div>
 	</div>
 </div>
